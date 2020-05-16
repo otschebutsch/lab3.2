@@ -64,7 +64,8 @@ public class MainActivity extends AppCompatActivity {
         speed = Double.parseDouble(radioButton1.getText().toString());
         iteration = Integer.parseInt(radioButton3.getText().toString());
         w[0] = w[1] = 0;
-        for (int i = 0; i < iteration; i++) {
+        int i;
+        for (i = 0; i < iteration; i++) {
             errorProb = errorProb - (point[i % 2][0] * w[0] + point[i % 2][1] * w[1]);
             w[0] = w[0] + errorProb * speed * point[i % 2][0];
             w[1] = w[1] + errorProb * speed * point[i % 2][1];
@@ -77,7 +78,8 @@ public class MainActivity extends AppCompatActivity {
                 break;
             }
         }
-        Toast.makeText(this, w[0] + " " + w[1],
+        Toast.makeText(this, w[0] + " " + w[1] + "\n" +
+                        "\nNumber of iterations = " + i,
                 Toast.LENGTH_SHORT).show();
     }
 
@@ -94,8 +96,9 @@ public class MainActivity extends AppCompatActivity {
         ThisThreadOfMine Task1 = new ThisThreadOfMine("Task1");
         Task1.start();
         Thread.sleep((long) (deadline * 1000));
-        stop = 1;
-        Toast.makeText(this, w[0] + " " + w[1],
+        MainActivity.stop = 1;
+        Toast.makeText(this, w[0] + " " + w[1] + "\n" +
+                        "Number of iterations = " + ThisThreadOfMine.i,
                 Toast.LENGTH_SHORT).show();
     }
     public void pointsInput() {
@@ -109,11 +112,13 @@ public class MainActivity extends AppCompatActivity {
 
 
 class ThisThreadOfMine extends Thread {
+    public static int i;
+
     ThisThreadOfMine(String name) {
         super(name);
     }
     public void run() {
-        for (int i = 0; MainActivity.stop==0 ; i++) {
+        for (i = 0; MainActivity.stop == 0; i++) {
             MainActivity.errorProb = MainActivity.errorProb - (MainActivity.point[i % 2][0] * MainActivity.w[0] + MainActivity.point[i % 2][1] * MainActivity.w[1]);
             MainActivity.w[0] = MainActivity.w[0] + MainActivity.errorProb * MainActivity.speed * MainActivity.point[i % 2][0];
             MainActivity.w[1] = MainActivity.w[1] + MainActivity.errorProb * MainActivity.speed * MainActivity.point[i % 2][1];
